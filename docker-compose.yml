@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  wordpress:
+    image: wordpress:php8.4-apache
+    ports:
+      - "8426:80"
+    volumes:
+      - ../../../:/var/www/html/
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+
+  db:
+    image: mysql:lts
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ../../../../db-data:/var/lib/mysql
+
+volumes:
+  volumes:
+  db_data:

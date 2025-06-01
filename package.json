@@ -1,0 +1,21 @@
+{
+    "name": "code-syntax-highlighting-block",
+    "version": "1.0.0",
+    "description": "Wordpress lock for displaying computer code with syntax highlighting.",
+    "author": "Hbgl <contact@hbgl.dev> (https://hbgl.dev)",
+    "license": "MIT",
+    "main": "build/index.js",
+    "scripts": {
+        "build": "wp-scripts build --blocks-manifest",
+        "packages-update": "wp-scripts packages-update",
+        "plugin-zip": "wp-scripts plugin-zip",
+        "start": "wp-scripts start --blocks-manifest",
+        "theme:update": "node dev/theme-update.mjs"
+    },
+    "devDependencies": {
+        "@wordpress/scripts": "^30.17.0"
+    },
+    "dependencies": {
+        "highlight.js": "^11.11.1"
+    }
+}

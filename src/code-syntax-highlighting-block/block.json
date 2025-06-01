@@ -1,0 +1,47 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "code-syntax-highlighting-block/code-syntax-highlighting-block",
+    "version": "1.0.0",
+    "title": "Code with Syntax Highlighting",
+    "category": "text",
+    "icon": "editor-code",
+    "description": "Display computer code with syntax highlighting.",
+    "example": {},
+    "supports": {
+        "html": false,
+        "typography": {
+            "fontSize": true,
+            "lineHeight": true,
+            "textAlign": false
+        }
+    },
+    "textdomain": "code-syntax-highlighting-block",
+    "editorScript": "file:./index.js",
+    "attributes": {
+        "code": {
+            "type": "string",
+            "default": ""
+        },
+        "codeHighlightedHtml": {
+            "type": "string",
+            "default": ""
+        },
+        "language": {
+            "type": "string",
+            "default": "php"
+        },
+        "theme": {
+            "type": "string",
+            "default": "default"
+        },
+        "themeLight": {
+            "type": "string",
+            "default": ""
+        },
+        "themeDark": {
+            "type": "string",
+            "default": ""
+        }
+    }
+}
