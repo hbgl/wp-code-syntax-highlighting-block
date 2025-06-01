@@ -1,7 +1,7 @@
 === Code Syntax Highlighting Block ===
 Contributors:      hbgl
 Tags:              code, syntax-highlighting
-Tested up to:      6.7
+Tested up to:      6.8
 Stable tag:        1.0.0
 License:           MIT
 License URI:       https://opensource.org/license/MIT
