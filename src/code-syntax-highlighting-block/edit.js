@@ -1,6 +1,6 @@
 import { __ } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import { PanelBody, SelectControl, TextareaControl } from '@wordpress/components';
+import { PanelBody, ComboboxControl, TextareaControl } from '@wordpress/components';
 import { useEffect, useMemo } from '@wordpress/element';
 import hljs from 'highlight.js';
 import useDebouncedInputCustom from './lib/debounce';
@@ -49,29 +49,33 @@ export default function Edit({ attributes, setAttributes }) {
         <div {...useBlockProps()}>
             <InspectorControls>
                 <PanelBody title={__('Settings', 'code-syntax-highlighting-block')}>
-                    <SelectControl
+                    <ComboboxControl
                         label={__('Language', 'code-syntax-highlighting-block')}
                         value={language}
                         options={languageOptions}
                         onChange={(value) => onLanguagechange(value)}
+                        allowReset={false}
                     />
-                    <SelectControl
+                    <ComboboxControl
                         label={__('Theme', 'code-syntax-highlighting-block')}
                         value={theme}
                         options={themeOptions}
                         onChange={(value) => setAttributes({ theme: value })}
+                        allowReset={false}
                     />
-                    <SelectControl
+                    <ComboboxControl
                         label={__('Theme Override (light)', 'code-syntax-highlighting-block')}
                         value={themeLight}
                         options={themeOverrideOptions}
                         onChange={(value) => setAttributes({ themeLight: value })}
+                        allowReset={true}
                     />
-                    <SelectControl
+                    <ComboboxControl
                         label={__('Theme Override (dark)', 'code-syntax-highlighting-block')}
                         value={themeDark}
                         options={themeOverrideOptions}
                         onChange={(value) => setAttributes({ themeDark: value })}
+                        allowReset={true}
                     />
                 </PanelBody>
             </InspectorControls>

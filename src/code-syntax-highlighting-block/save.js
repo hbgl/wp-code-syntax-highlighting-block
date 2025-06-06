@@ -25,11 +25,13 @@ export default function save({ attributes }) {
 
 /**
  * @param {string} theme 
- * @param {string} themeLight 
- * @param {string} themeDark 
+ * @param {string|null} themeLight 
+ * @param {string|null} themeDark 
  * @returns {JSX.Element[]}
  */
 function buildThemeStylesheets(theme, themeLight, themeDark) {
+    themeLight ??= '';
+    themeDark ??= '';
     const themeStylesheets = [];
     if (themeLight === '' || themeDark === '') {
         let media = undefined;
