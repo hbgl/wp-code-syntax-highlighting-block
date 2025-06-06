@@ -15,7 +15,6 @@ export default function Edit({ attributes, setAttributes }) {
         themeLight,
         themeDark,
     } = attributes;
-    console.log(attributes);
 
     const [codeImmediateValue, setCodeDebouncedValue, codeDebouncedValue] = useDebouncedInputCustom(code, 1000);
 
