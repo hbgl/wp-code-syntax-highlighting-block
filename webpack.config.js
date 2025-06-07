@@ -1,10 +1,10 @@
 const defaultConfig = require( '@wordpress/scripts/config/webpack.config' );
-const CopyHighlightJsThemesPlugin = require('./dev/copy-highlight-js-themes/CopyHighlightJsThemesPlugin.cjs');
+const AssetBuilderPlugin = require('./dev/asset-builder/AssetBuilderPlugin.cjs');
 
 module.exports = {
     ...defaultConfig,
     plugins: [
-        new CopyHighlightJsThemesPlugin(),
+        new AssetBuilderPlugin(),
         ...defaultConfig.plugins,
     ],
 };

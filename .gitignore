@@ -38,6 +38,8 @@ node_modules/
 # Generated files
 /src/code-syntax-highlighting-block/generated/*
 !/src/code-syntax-highlighting-block/generated/.gitkeep
+/includes/generated/*
+!/includes/generated/.gitkeep
 
 # Themes
 /public/css/themes/*

@@ -1,4 +1,4 @@
-const { copyHighlightJsThemes } = require('./copy-highlight-js-themes');
+const { buildAssets } = require('./asset-builder');
 
 class CopyHighlightJsThemesPlugin {
 	apply(compiler) {
@@ -11,11 +11,11 @@ class CopyHighlightJsThemesPlugin {
                 return;
             }
 			const logger = compiler.getInfrastructureLogger(pluginName);
-            logger.info('⏳ Copying highlight.js themes');
+            logger.info('⏳ Building custom assets');
             const start = performance.now();
-            const results = await copyHighlightJsThemes();
+            await buildAssets();
             const end = performance.now();
-            logger.info(`✅ Copied ${results.themeCount} themes ${Math.round(end - start)}ms to ${results.themeDestDir} and wrote to ${results.manifestDestFile}`);
+            logger.info(`✅ Building custom assets completed in ${Math.round(end - start)}ms`);
             ran = true;
 		};
 

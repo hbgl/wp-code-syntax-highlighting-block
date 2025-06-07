@@ -4,12 +4,10 @@ import { getTheme } from './lib/themes';
 const stylesheetBaseDir = '/wp-content/plugins/code-syntax-highlighting-block/public/css/themes/';
 
 export default function save({ attributes }) {
-    const {
-        codeHighlightedHtml,
-        theme,
-        themeLight,
-        themeDark,
-    } = attributes;
+    const codeHighlightedHtml = attributes.codeHighlightedHtml ?? '';
+    const theme = attributes.theme ?? '';
+    const themeLight = attributes.themeLight ?? '';
+    const themeDark = attributes.themeDark ?? '';
 
     const themeStylesheets = buildThemeStylesheets(theme, themeLight, themeDark);
 
@@ -25,13 +23,11 @@ export default function save({ attributes }) {
 
 /**
  * @param {string} theme 
- * @param {string|null} themeLight 
- * @param {string|null} themeDark 
+ * @param {string} themeLight 
+ * @param {string} themeDark 
  * @returns {JSX.Element[]}
  */
 function buildThemeStylesheets(theme, themeLight, themeDark) {
-    themeLight ??= '';
-    themeDark ??= '';
     const themeStylesheets = [];
     if (themeLight === '' || themeDark === '') {
         let media = undefined;

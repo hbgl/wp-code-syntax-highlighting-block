@@ -29,11 +29,11 @@
         },
         "language": {
             "type": "string",
-            "default": "php"
+            "default": ""
         },
         "theme": {
             "type": "string",
-            "default": "default"
+            "default": ""
         },
         "themeLight": {
             "type": "string",

@@ -10,7 +10,7 @@ A Gutenberg block for syntax-higlighted code.
 
 == Description ==
 
-A Wordpress plugin that provides a Gutenberg block for displaying computer code with syntax-highlighting. Uses [highlight.js](https://highlightjs.org/) under the hood.
+A Wordpress plugin that provides a Gutenberg block for displaying computer source code with syntax-highlighting. Uses [highlight.js](https://highlightjs.org/) under the hood.
 
 - ✅ Supports 192 languages
 - ✅ 256 included themes

@@ -2,11 +2,13 @@ const { readdir, copyFile, writeFile, rm } = require('node:fs/promises');
 const path = require('node:path');
 const { createHash } = require('node:crypto');
 const { createReadStream } = require('node:fs');
+const hljs = require('highlight.js');
 
 const projectRoot = path.dirname(path.dirname(__dirname));
-const sourceDir = path.resolve(projectRoot, 'node_modules/highlight.js/styles');
-const stylesheetDestDir = path.resolve(projectRoot, 'public/css/themes');
-const jsDestFilePath = path.resolve(projectRoot, 'src/code-syntax-highlighting-block/generated/theme-manifest.generated.js');
+const themeSourceDir = path.resolve(projectRoot, 'node_modules/highlight.js/styles');
+const themeStylesheetDestDir = path.resolve(projectRoot, 'public/css/themes');
+const themeManifestJsDestFilePath = path.resolve(projectRoot, 'src/code-syntax-highlighting-block/generated/theme-manifest.generated.js');
+const manifestPhpFilePath = path.resolve(projectRoot, 'includes/generated/manifest.generated.php');
 
 /**
  * @typedef {Object} ThemeEntry
@@ -28,7 +30,7 @@ async function readSourceThemes() {
     ];
 
     for (const themeDirName of themeDirNames) {
-        const themeDir = path.join(sourceDir, themeDirName);
+        const themeDir = path.join(themeSourceDir, themeDirName);
         const files = await readdir(themeDir);
         for (const file of files) {
             if (!file.endsWith('.min.css')) {
@@ -72,29 +74,32 @@ async function writeThemeStylesheets(themes) {
         copyThemes.set(theme.destName, theme);
     }
 
-    for (const existingFile of await readdir(stylesheetDestDir)) {
+    for (const existingFile of await readdir(themeStylesheetDestDir)) {
         if (!existingFile.endsWith('.min.css')) {
             continue;
         }
 
         const theme = copyThemes.get(existingFile);
         if (theme === undefined) {
-            unlink(path.join(stylesheetDestDir, existingFile));
+            unlink(path.join(themeStylesheetDestDir, existingFile));
             continue;
         }
 
-        const existingContentHash = await hashFileContent(path.join(stylesheetDestDir, existingFile));
+        const existingContentHash = await hashFileContent(path.join(themeStylesheetDestDir, existingFile));
         if (existingContentHash === theme.contentHash) {
             copyThemes.delete(existingFile);
         }
     }
 
     for (const { srcPath, destName } of copyThemes.values()) {
-        const destPath = path.join(stylesheetDestDir, destName);
+        const destPath = path.join(themeStylesheetDestDir, destName);
         await copyFile(srcPath, destPath);
     }
 }
 
+/**
+ * @param {ThemeEntry[]} themes 
+ */
 async function writeThemeManifestJsFile(themes) {
     const themeEntries = {};
     for (const theme of themes){
@@ -113,7 +118,42 @@ async function writeThemeManifestJsFile(themes) {
         `export const themes = ${JSON.stringify(themeEntries, null, 4)};\n` +
         '\n'
     );
-    await writeFile(jsDestFilePath, themesJs);
+    await writeFile(themeManifestJsDestFilePath, themesJs);
+}
+
+/**
+ * @param {ThemeEntry[]} themes 
+ */
+async function writeManifestPhpFile(themes) {
+    let php = (
+        '<?php\n' +
+        '// Auto-generated. Do not modify. Run `npm run theme:update` to update.\n' +
+        '\n' +
+        'if (! defined(\'ABSPATH\')) {\n' +
+        '    exit; // Exit if accessed directly.\n' +
+        '}\n' +
+        '\n' +
+        'return [\n'
+    );
+
+    php += '    \'themes\' => [\n';
+    for (const theme of themes) {
+        const themePhpString = theme.name.replaceAll(/'|\\/g, c => `\\${c}`);
+        php += `        '${themePhpString}',\n`;
+    }
+    php += '    ],\n';
+
+    php += '    \'languages\' => [\n';
+    const languages = hljs.listLanguages().sort();
+    for (const language of languages) {
+        const languagePhpString = language.replaceAll(/'|\\/g, c => `\\${c}`);
+        php += `        '${languagePhpString}',\n`;
+    }
+    php += '    ],\n';
+
+    php += '];\n';
+
+    await writeFile(manifestPhpFilePath, php);
 }
 
 /**
@@ -132,15 +172,10 @@ function hashFileContent(path) {
 }
 
 module.exports = {
-    copyHighlightJsThemes: async function () {
+    buildAssets: async function () {
         const themes = await readSourceThemes();
         await writeThemeStylesheets(themes);
         await writeThemeManifestJsFile(themes);
-
-        return {
-            themeCount: themes.length,
-            themeDestDir: path.relative(projectRoot, stylesheetDestDir),
-            manifestDestFile: path.relative(projectRoot, jsDestFilePath),
-        };
+        await writeManifestPhpFile(themes);
     }
 };

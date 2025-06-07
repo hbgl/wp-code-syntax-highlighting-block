@@ -4,7 +4,7 @@
  * Description:       Block for displaying computer code with syntax highlighting.
  * Version:           1.0.0
  * Requires at least: 6.7
- * Requires PHP:      7.4
+ * Requires PHP:      8.3
  * Author:            hbgl
  * Author URI:        https://hbgl.dev
  * License:           MIT
@@ -34,3 +34,6 @@ add_action( 'init', function() {
     }
 } );
 
+require_once plugin_dir_path(__FILE__) . 'includes/settings.php';
+
+register_activation_hook(__FILE__, 'cshb_settings_activation_callback');
