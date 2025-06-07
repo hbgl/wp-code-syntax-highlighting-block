@@ -1,6 +1,6 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
 
@@ -140,7 +140,7 @@ add_action('admin_init', function () {
                 <?php endif; ?>
             </select>
             <p class="description">
-		        <?php esc_html_e( 'Favorites are faster to select in the Gutenberg editor.', 'code-syntax-highlighting-block' ); ?>
+		        <?php esc_html_e('Favorites are faster to select in the Gutenberg editor.', 'code-syntax-highlighting-block'); ?>
 	        </p>
             <?php
         },
@@ -155,7 +155,7 @@ add_action('admin_init', function () {
         '__return_null',
         'code-syntax-highlighting-block',
     );
-    
+
     add_settings_field(
         'cshb_field_language_default',
         __('Default Language', 'code-syntax-highlighting-block'),
@@ -221,7 +221,7 @@ add_action('admin_init', function () {
                 <?php endif; ?>
             </select>
             <p class="description">
-		        <?php esc_html_e( 'Favorites are faster to select in the Gutenberg editor.', 'code-syntax-highlighting-block' ); ?>
+		        <?php esc_html_e('Favorites are faster to select in the Gutenberg editor.', 'code-syntax-highlighting-block'); ?>
 	        </p>
             <?php
         },
@@ -231,13 +231,13 @@ add_action('admin_init', function () {
     );
 });
 
-add_action('admin_menu', function() {
+add_action('admin_menu', function () {
     add_options_page(
         __('Code Syntax Highlight Settings', 'code-syntax-highlighting-block'),
         __('Code Syntax Highlight', 'code-syntax-highlighting-block'),
         'manage_options',
         'code-syntax-highlighting-block',
-        function() {
+        function () {
             if (! current_user_can('manage_options')) {
                 return;
             }
@@ -253,9 +253,9 @@ add_action('admin_menu', function() {
                 <form action="options.php" method="post">
                     <?php
                     settings_fields('code-syntax-highlighting-block');
-                    do_settings_sections('code-syntax-highlighting-block');
-                    submit_button(__('Save Settings', 'code-syntax-highlighting-block'));
-                    ?>
+            do_settings_sections('code-syntax-highlighting-block');
+            submit_button(__('Save Settings', 'code-syntax-highlighting-block'));
+            ?>
                 </form>
             </div>
             <?php
@@ -275,11 +275,13 @@ add_action('enqueue_block_editor_assets', function () {
     }
 });
 
-function cshb_options(): CshbOptions {
+function cshb_options(): CshbOptions
+{
     return CshbOptions::fromArray(get_option('cshb_options', []));
 }
 
-function cshb_settings_activation_callback() {
+function cshb_settings_activation_callback()
+{
     if (get_option('cshb_options', false) !== false) {
         return;
     }
@@ -287,7 +289,8 @@ function cshb_settings_activation_callback() {
     add_option('cshb_options', CshbOptions::defaults()->toArray());
 }
 
-final readonly class CshbOptions {
+final readonly class CshbOptions
+{
     private const int VERSION = 1;
 
     /**
@@ -337,7 +340,7 @@ final readonly class CshbOptions {
         if (! is_string($themeLightDefault)) {
             $themeLightDefault = '';
         }
-        
+
         $themeDarkDefault = $array['theme_dark_default'] ?? '';
         if (! is_string($themeDarkDefault)) {
             $themeDarkDefault = '';

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name:       Code Syntax Highlighting Block
  * Description:       Block for displaying computer code with syntax highlighting.
@@ -14,25 +15,25 @@
  * @package CreateBlock
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
 
-add_action( 'init', function() {
-    if ( function_exists( 'wp_register_block_types_from_metadata_collection' ) ) {
-        wp_register_block_types_from_metadata_collection( __DIR__ . '/build', __DIR__ . '/build/blocks-manifest.php' );
+add_action('init', function () {
+    if (function_exists('wp_register_block_types_from_metadata_collection')) {
+        wp_register_block_types_from_metadata_collection(__DIR__ . '/build', __DIR__ . '/build/blocks-manifest.php');
         return;
     }
 
-    if ( function_exists( 'wp_register_block_metadata_collection' ) ) {
-        wp_register_block_metadata_collection( __DIR__ . '/build', __DIR__ . '/build/blocks-manifest.php' );
+    if (function_exists('wp_register_block_metadata_collection')) {
+        wp_register_block_metadata_collection(__DIR__ . '/build', __DIR__ . '/build/blocks-manifest.php');
     }
-    
+
     $manifest_data = require __DIR__ . '/build/blocks-manifest.php';
-    foreach ( array_keys( $manifest_data ) as $block_type ) {
-        register_block_type( __DIR__ . "/build/{$block_type}" );
+    foreach (array_keys($manifest_data) as $block_type) {
+        register_block_type(__DIR__ . "/build/{$block_type}");
     }
-} );
+});
 
 require_once plugin_dir_path(__FILE__) . 'includes/settings.php';
 

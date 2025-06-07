@@ -4,7 +4,8 @@ if (! defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
 
-function cshb_manifest(): CshbManifest {
+function cshb_manifest(): CshbManifest
+{
     static $manifest = null;
     if ($manifest === null) {
         $data = require __DIR__ . '/generated/manifest.generated.php';
@@ -13,7 +14,8 @@ function cshb_manifest(): CshbManifest {
     return $manifest;
 }
 
-final readonly class CshbManifest {
+final readonly class CshbManifest
+{
     /**
      * @param list<string> $themes
      * @param list<string> $languages

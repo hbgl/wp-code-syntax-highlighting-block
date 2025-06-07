@@ -44,3 +44,7 @@ node_modules/
 # Themes
 /public/css/themes/*
 !/public/css/themes/.gitkeep
+
+/vendor/
+
+/.php-cs-fixer.cache
