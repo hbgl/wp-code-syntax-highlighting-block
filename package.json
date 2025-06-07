@@ -13,7 +13,8 @@
         "theme:update": "node dev/theme-update.mjs"
     },
     "devDependencies": {
-        "@wordpress/scripts": "^30.17.0"
+        "@wordpress/scripts": "^30.17.0",
+        "postcss": "^8.5.4"
     },
     "dependencies": {
         "highlight.js": "^11.11.1"

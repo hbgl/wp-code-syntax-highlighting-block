@@ -1,14 +1,21 @@
-const { readdir, copyFile, writeFile, rm } = require('node:fs/promises');
+const fs = require('node:fs/promises');
 const path = require('node:path');
-const { createHash } = require('node:crypto');
-const { createReadStream } = require('node:fs');
+const crypto = require('node:crypto');
 const hljs = require('highlight.js');
+const postcss = require('postcss');
 
 const projectRoot = path.dirname(path.dirname(__dirname));
 const themeSourceDir = path.resolve(projectRoot, 'node_modules/highlight.js/styles');
 const themeStylesheetDestDir = path.resolve(projectRoot, 'public/css/themes');
 const themeManifestJsDestFilePath = path.resolve(projectRoot, 'src/code-syntax-highlighting-block/generated/theme-manifest.generated.js');
 const manifestPhpFilePath = path.resolve(projectRoot, 'includes/generated/manifest.generated.php');
+
+/**
+ * @typedef {Object} ThemeSourceEntry
+ * @property {string} name
+ * @property {string} destName
+ * @property {string} srcPath
+ */
 
 /**
  * @typedef {Object} ThemeEntry
@@ -19,9 +26,10 @@ const manifestPhpFilePath = path.resolve(projectRoot, 'includes/generated/manife
  */
 
 /**
- * @returns {ThemeEntry[]}
+ * @returns {ThemeSourceEntry[]}
  */
 async function readSourceThemes() {
+    /** @type {Map<string, ThemeSourceEntry>} */
     const themes = new Map();
 
     const themeDirNames = [
@@ -31,7 +39,7 @@ async function readSourceThemes() {
 
     for (const themeDirName of themeDirNames) {
         const themeDir = path.join(themeSourceDir, themeDirName);
-        const files = await readdir(themeDir);
+        const files = await fs.readdir(themeDir);
         for (const file of files) {
             if (!file.endsWith('.min.css')) {
                 continue;
@@ -47,14 +55,10 @@ async function readSourceThemes() {
                 continue;
             }
 
-            const themeSrcPath = path.join(themeDir, file);
-            const contentHash = await hashFileContent(themeSrcPath);
-
             themes.set(name, {
                 name: name,
                 destName: `${name}.min.css`,
-                srcPath: themeSrcPath,
-                contentHash: contentHash,
+                srcPath: path.join(themeDir, file),
             });
         }
     }
@@ -65,36 +69,69 @@ async function readSourceThemes() {
 }
 
 /**
- * @param {ThemeEntry[]} themes 
+ * @param {ThemeSourceEntry[]} sourceThemes
+ * @returns {ThemeEntry[]}
  */
-async function writeThemeStylesheets(themes) {
-    /** @type {Map<string, ThemeEntry>} */
-    const copyThemes = new Map();
-    for (const theme of themes) {
-        copyThemes.set(theme.destName, theme);
-    }
-
-    for (const existingFile of await readdir(themeStylesheetDestDir)) {
-        if (!existingFile.endsWith('.min.css')) {
+async function writeThemeStylesheetsAndCalculateContentHash(sourceThemes) {
+    // Clean up themes which are no longer supported.
+    const themeDestNames = new Set(sourceThemes.map(t => t.destName));
+    for (const existingFile of await fs.readdir(themeStylesheetDestDir)) {
+        if (! existingFile.endsWith('.min.css')) {
             continue;
         }
-
-        const theme = copyThemes.get(existingFile);
-        if (theme === undefined) {
-            unlink(path.join(themeStylesheetDestDir, existingFile));
+        const themeIsNoLongerSupported = ! themeDestNames.has(existingFile);
+        if (themeIsNoLongerSupported) {
+            await fs.unlink(path.join(themeStylesheetDestDir, existingFile));
             continue;
         }
+    }
 
-        const existingContentHash = await hashFileContent(path.join(themeStylesheetDestDir, existingFile));
-        if (existingContentHash === theme.contentHash) {
-            copyThemes.delete(existingFile);
+    /**
+     * There some themes that use the :root selector to define
+     * variables. Since we are using the stylesheet inside of
+     * the shadow DOM where there is no root, the variables will
+     * not applied.
+     * Fix: Rewrite :root to :host.
+     */
+    const postcssProcessor = postcss([
+        (root) => {
+            root.walkRules(rule => {
+                const selector = rule.selector.trim();
+                if (selector === ':root') {
+                    rule.selector = ':root,:host';
+                }
+            });
+        },
+    ]);
+
+    /** @type {ThemeEntry[]} */
+    const result = [];
+
+    for (const theme of sourceThemes) {
+        const cssOriginal = await fs.readFile(theme.srcPath, 'utf-8');
+        const postcssResult = await postcssProcessor.process(
+            cssOriginal,
+            {
+                from: theme.srcPath,
+                map: false,
+            },
+        );
+        const transformedCss = postcssResult.css;
+
+        const existingContentHash = await hashFileContent(path.join(themeStylesheetDestDir, theme.destName));
+        const newContentHash = hashContent(transformedCss);
+        if (existingContentHash !== newContentHash) {
+            const destPath = path.join(themeStylesheetDestDir, theme.destName);
+            await fs.writeFile(destPath, transformedCss);
         }
+
+        result.push({
+            ...theme,
+            contentHash: newContentHash,
+        });
     }
 
-    for (const { srcPath, destName } of copyThemes.values()) {
-        const destPath = path.join(themeStylesheetDestDir, destName);
-        await copyFile(srcPath, destPath);
-    }
+    return result;
 }
 
 /**
@@ -118,7 +155,7 @@ async function writeThemeManifestJsFile(themes) {
         `export const themes = ${JSON.stringify(themeEntries, null, 4)};\n` +
         '\n'
     );
-    await writeFile(themeManifestJsDestFilePath, themesJs);
+    await fs.writeFile(themeManifestJsDestFilePath, themesJs);
 }
 
 /**
@@ -153,28 +190,43 @@ async function writeManifestPhpFile(themes) {
 
     php += '];\n';
 
-    await writeFile(manifestPhpFilePath, php);
+    await fs.writeFile(manifestPhpFilePath, php);
+}
+
+/**
+ * @param {string} path 
+ * @returns {string|false}
+ */
+async function hashFileContent(path) {
+    try {
+        var file = await fs.open(path, 'r');
+    } catch (e) {
+        if (e.code === 'ENOENT') {
+            return false;
+        }
+    }
+
+    const hash = crypto.createHash('sha256');
+    for await (const chunk of file.createReadStream()) {
+      hash.update(chunk);
+    }
+    await file.close();
+    
+    return hash.digest('hex');
 }
 
 /**
  * @param {string} path 
  * @returns {string}
  */
-function hashFileContent(path) {
-    return new Promise((resolve, reject) => {
-        const hash = createHash('sha256');
-        const stream = createReadStream(path);
-
-        stream.on('error', reject);
-        stream.on('data', (chunk) => hash.update(chunk));
-        stream.on('end', () => resolve(hash.digest('hex')));
-    });
+function hashContent(content) {
+    return crypto.createHash('sha256').update(content).digest('hex');
 }
 
 module.exports = {
     buildAssets: async function () {
-        const themes = await readSourceThemes();
-        await writeThemeStylesheets(themes);
+        const sourceThemes = await readSourceThemes();
+        const themes = await writeThemeStylesheetsAndCalculateContentHash(sourceThemes);
         await writeThemeManifestJsFile(themes);
         await writeManifestPhpFile(themes);
     }
