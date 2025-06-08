@@ -241,12 +241,6 @@ add_action('admin_menu', function () {
             if (! current_user_can('manage_options')) {
                 return;
             }
-
-            if (isset($_GET['settings-updated'])) {
-                add_settings_error('cshb_messages', 'cshb_message', __('Settings Saved', 'code-syntax-highlighting-block'), 'updated');
-            }
-
-            settings_errors('cshb_messages');
             ?>
             <div class="wrap">
                 <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
