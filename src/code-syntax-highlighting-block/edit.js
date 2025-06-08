@@ -12,6 +12,21 @@ import { getSettings } from './lib/settings';
  * @typedef {import('@wordpress/components/build-types/combobox-control/types').ComboboxControlOption} ComboboxControlOption
  */
 
+/**
+ * @type {{
+ *     language: string|null,
+ *     theme: string|null,
+ *     themeLight: string|null,
+ *     themeDark: string|null,
+ * }}
+ */
+const rememberedSelections = {
+    language: null,
+    theme: null,
+    themeLight: null,
+    themeDark: null,
+};
+
 export default function Edit({ attributes, setAttributes }) {
     let code = attributes.code ?? '';
     let language = attributes.language ?? '';
@@ -22,10 +37,10 @@ export default function Edit({ attributes, setAttributes }) {
     const isNewBlock = language === '';
     if (isNewBlock) {
         const settings = getSettings();
-        language ||= settings.languageDefault;
-        theme ||= settings.themeDefault;
-        themeLight ||= settings.themeDefaultLight;
-        themeDark ||= settings.themeDefaultDark;
+        language ||= rememberedSelections.language || settings.languageDefault;
+        theme ||= rememberedSelections.theme || settings.themeDefault;
+        themeLight ||= rememberedSelections.themeLight || settings.themeDefaultLight;
+        themeDark ||= rememberedSelections.themeDark || settings.themeDefaultDark;
     }
 
     useEffect(() => {
@@ -48,11 +63,27 @@ export default function Edit({ attributes, setAttributes }) {
         });
     }, [codeDebouncedValue]);
 
-    const onLanguagechange = (value) => {
+    const onLanguagechange = value => {
+        rememberedSelections.language = value || null;
         setAttributes({
             language: value,
             codeHighlightedHtml: tryHighlightCode(codeDebouncedValue, value),
         });
+    };
+
+    const onThemeChange = value => {
+        rememberedSelections.theme = value || null;
+        setAttributes({ theme: value });
+    };
+
+    const onThemeLightChange = value => {
+        rememberedSelections.themeLight = value || null;
+        setAttributes({ themeLight: value });
+    };
+
+    const onThemeDarkChange = value => {
+        rememberedSelections.themeDark = value || null;
+        setAttributes({ themeDark: value });
     };
 
     return (
@@ -63,28 +94,28 @@ export default function Edit({ attributes, setAttributes }) {
                         label={__('Language', 'code-syntax-highlighting-block')}
                         value={language}
                         options={getLanguageOptions()}
-                        onChange={(value) => onLanguagechange(value)}
+                        onChange={onLanguagechange}
                         allowReset={false}
                     />
                     <ComboboxControl
                         label={__('Theme', 'code-syntax-highlighting-block')}
                         value={theme}
                         options={getThemeOptions()}
-                        onChange={(value) => setAttributes({ theme: value })}
+                        onChange={onThemeChange}
                         allowReset={false}
                     />
                     <ComboboxControl
                         label={__('Theme Override (light)', 'code-syntax-highlighting-block')}
                         value={themeLight}
                         options={getThemeOverrideOptions()}
-                        onChange={(value) => setAttributes({ themeLight: value })}
+                        onChange={onThemeLightChange}
                         allowReset={true}
                     />
                     <ComboboxControl
                         label={__('Theme Override (dark)', 'code-syntax-highlighting-block')}
                         value={themeDark}
                         options={getThemeOverrideOptions()}
-                        onChange={(value) => setAttributes({ themeDark: value })}
+                        onChange={onThemeDarkChange}
                         allowReset={true}
                     />
                 </PanelBody>
