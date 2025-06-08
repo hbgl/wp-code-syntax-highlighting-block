@@ -90,6 +90,7 @@ export default function Edit({ attributes, setAttributes }) {
                 </PanelBody>
             </InspectorControls>
             <TextareaControl
+                style={{font: '1rem Inconsolata, monospace' }}
                 rows="8"
                 value={codeImmediateValue}
                 onChange={(value) => setCodeDebouncedValue(value)}
