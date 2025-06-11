@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="1544"
+   height="500"
+   viewBox="0 0 1544 500"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   sodipodi:docname="banner-inkscape.svg"
+   inkscape:export-filename="banner-1544-50.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     inkscape:zoom="0.51339145"
+     inkscape:cx="382.74887"
+     inkscape:cy="367.16622"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer2" />
+  <defs
+     id="defs1">
+    <rect
+       x="486.19564"
+       y="34.433119"
+       width="103.29936"
+       height="147.37375"
+       id="rect47" />
+    <rect
+       x="20.659872"
+       y="291.99285"
+       width="96.412734"
+       height="176.29757"
+       id="rect46" />
+    <rect
+       x="743.75537"
+       y="24.791846"
+       width="813.99894"
+       height="469.66774"
+       id="rect4" />
+    <rect
+       x="34.433119"
+       y="19.282547"
+       width="583.9857"
+       height="410.44278"
+       id="rect3" />
+    <rect
+       x="12.395923"
+       y="11.018598"
+       width="838.79078"
+       height="477.93169"
+       id="rect2" />
+  </defs>
+  <g
+     inkscape:label="Background"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#1e1e1e;stroke-width:3.44822"
+       id="rect1"
+       width="1544"
+       height="500"
+       x="0"
+       y="0" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Foreground">
+    <text
+       xml:space="preserve"
+       id="text2"
+       style="font-size:96px;line-height:1.3;font-family:Bahnschrift;-inkscape-font-specification:Bahnschrift;text-align:start;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect3);display:inline;fill:#e8e8e8;fill-opacity:1"
+       transform="translate(51.451717,39.837124)"><tspan
+         x="34.433594"
+         y="109.90195"
+         id="tspan3">Code
+</tspan><tspan
+         x="34.433594"
+         y="234.70194"
+         id="tspan4"> Syntax
+</tspan><tspan
+         x="34.433594"
+         y="359.50193"
+         id="tspan5">  Highlighting</tspan></text>
+    <text
+       xml:space="preserve"
+       id="text3"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;line-height:1.4;font-family:Consolas;-inkscape-font-specification:Consolas;text-align:start;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect4);display:inline;fill:#abb2bf;fill-opacity:1"
+       transform="translate(10.635141,1.3750002)"><tspan
+         x="743.75586"
+         y="43.644531"
+         id="tspan15"><tspan
+   style="fill:#c678dd"
+   id="tspan6">const</tspan> users = [{<tspan
+   style="fill:#d19a66"
+   id="tspan7">name</tspan>: <tspan
+   style="fill:#98c379"
+   id="tspan8">&quot;Alice&quot;</tspan>, <tspan
+   style="fill:#d19a66"
+   id="tspan9">age</tspan>: <tspan
+   style="fill:#d19a66"
+   id="tspan10">30</tspan>}, {<tspan
+   style="fill:#d19a66"
+   id="tspan11">name</tspan>: <tspan
+   style="fill:#98c379"
+   id="tspan12">&quot;Bob&quot;</tspan>, <tspan
+   style="fill:#d19a66"
+   id="tspan13">age</tspan>: <tspan
+   style="fill:#d19a66"
+   id="tspan14">25</tspan>}];
+</tspan><tspan
+         x="743.75586"
+         y="71.644531"
+         id="tspan19"><tspan
+   style="fill:#c678dd"
+   id="tspan16">const</tspan> <tspan
+   style="fill:#61aeee"
+   id="tspan17">isAdult</tspan> = u =&gt; u.age &gt;= <tspan
+   style="fill:#d19a66"
+   id="tspan18">30</tspan>;
+</tspan><tspan
+         x="743.75586"
+         y="99.644531"
+         id="tspan27"><tspan
+   style="fill:#c678dd"
+   id="tspan20">const</tspan> <tspan
+   style="fill:#61aeee"
+   id="tspan21">greet</tspan> = u =&gt; <tspan
+   style="fill:#98c379"
+   id="tspan22">`Hi </tspan><tspan
+   style="fill:#e06c75"
+   id="tspan23">${u.name}</tspan><tspan
+   style="fill:#98c379"
+   id="tspan24">, age </tspan><tspan
+   style="fill:#e06c75"
+   id="tspan25">${u.age}</tspan><tspan
+   style="fill:#98c379"
+   id="tspan26">`</tspan>;
+</tspan><tspan
+         x="743.75586"
+         y="127.64453"
+         id="tspan31"><tspan
+   style="fill:#c678dd"
+   id="tspan28">const</tspan> results = users.<tspan
+   style="fill:#61aeee"
+   id="tspan29">filter</tspan>(isAdult).<tspan
+   style="fill:#61aeee"
+   id="tspan30">map</tspan>(greet);
+</tspan><tspan
+         x="743.75586"
+         y="155.64453"
+         id="tspan35"><tspan
+   style="fill:#c678dd"
+   id="tspan32">for</tspan> (<tspan
+   style="fill:#c678dd"
+   id="tspan33">let</tspan> i = <tspan
+   style="fill:#d19a66"
+   id="tspan34">0</tspan>; i &lt; results.length; i++) {
+</tspan><tspan
+         x="743.75586"
+         y="183.64453"
+         id="tspan37">    <tspan
+   style="fill:#d19a66"
+   id="tspan36">console</tspan>.log(results[i])
+</tspan><tspan
+         x="743.75586"
+         y="211.64453"
+         id="tspan38">}
+</tspan><tspan
+         x="743.75586"
+         y="239.64453"
+         id="tspan40"><tspan
+   style="fill:#c678dd"
+   id="tspan39">if</tspan> (results.length) {
+</tspan><tspan
+         x="743.75586"
+         y="267.64453"
+         id="tspan46">    <tspan
+   style="fill:#d19a66"
+   id="tspan41">console</tspan>.<tspan
+   style="fill:#61aeee"
+   id="tspan42">log</tspan>(<tspan
+   style="fill:#98c379"
+   id="tspan43">`Found </tspan><tspan
+   style="fill:#e06c75"
+   id="tspan44">${results.length}</tspan><tspan
+   style="fill:#98c379"
+   id="tspan45"> adults. Let's greet them.`</tspan>);
+</tspan><tspan
+         x="743.75586"
+         y="295.64453"
+         id="tspan107">} <tspan
+   style="fill:#c678dd"
+   id="tspan106">else</tspan> {
+</tspan><tspan
+         x="743.75586"
+         y="323.64453"
+         id="tspan110">    <tspan
+   style="fill:#c678dd"
+   id="tspan108">throw new</tspan> Error(<tspan
+   style="fill:#98c379"
+   id="tspan109">&quot;No adults found.&quot;</tspan>);
+</tspan><tspan
+         x="743.75586"
+         y="351.64453"
+         id="tspan111">}
+</tspan><tspan
+         x="743.75586"
+         y="379.64453"
+         id="tspan115"><tspan
+   style="fill:#d19a66"
+   id="tspan112">document</tspan>.body.<tspan
+   style="fill:#61aeee"
+   id="tspan113">append</tspan>(...results.<tspan
+   style="fill:#61aeee"
+   id="tspan114">map</tspan>(r =&gt; {
+</tspan><tspan
+         x="743.75586"
+         y="407.64453"
+         id="tspan119">    const p = <tspan
+   style="fill:#d19a66"
+   id="tspan116">document</tspan>.<tspan
+   style="fill:#61aeee"
+   id="tspan117">createElement</tspan>(<tspan
+   style="fill:#98c379"
+   id="tspan118">&quot;p&quot;</tspan>); p.textContent = r;
+</tspan><tspan
+         x="743.75586"
+         y="435.64453"
+         id="tspan120">    return p;
+</tspan><tspan
+         x="743.75586"
+         y="463.64453"
+         id="tspan121">}));</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:128px;font-family:Bahnschrift;-inkscape-font-specification:Bahnschrift;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffd700;fill-opacity:1"
+       x="22.129"
+       y="156.98708"
+       id="text47"><tspan
+         sodipodi:role="line"
+         id="tspan47"
+         x="22.129"
+         y="156.98708">{</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:128px;font-family:Bahnschrift;-inkscape-font-specification:Bahnschrift;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffd700;fill-opacity:1"
+       x="667.94501"
+       y="406.24545"
+       id="text48"><tspan
+         sodipodi:role="line"
+         id="tspan48"
+         x="667.94501"
+         y="406.24545">}</tspan></text>
+  </g>
+</svg>

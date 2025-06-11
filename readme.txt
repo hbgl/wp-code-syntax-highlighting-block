@@ -24,6 +24,11 @@ A Wordpress plugin that provides a Gutenberg block for displaying computer sourc
 
 [Because highlight.js does not have them.](https://highlightjs.readthedocs.io/en/latest/line-numbers.html)
 
+== Screenshots ==
+
+1. A demo of syntax-highlighted PHP code.
+2. A demo of editing the block in the Gutenberg editor.
+
 == Changelog ==
 
 = 1.0.0 =
