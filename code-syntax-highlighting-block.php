@@ -5,7 +5,7 @@
  * Description:       Block for displaying computer code with syntax highlighting.
  * Version:           1.0.0
  * Requires at least: 6.7
- * Requires PHP:      8.3
+ * Requires PHP:      8.1
  * Author:            hbgl
  * Author URI:        https://hbgl.dev
  * License:           MIT

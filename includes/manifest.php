@@ -14,15 +14,15 @@ function cshb_manifest(): CshbManifest
     return $manifest;
 }
 
-final readonly class CshbManifest
+final class CshbManifest
 {
     /**
      * @param list<string> $themes
      * @param list<string> $languages
      */
     public function __construct(
-        public array $themes,
-        public array $languages,
+        public readonly array $themes,
+        public readonly array $languages,
     ) {
     }
 

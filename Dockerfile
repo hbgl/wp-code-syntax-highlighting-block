@@ -1,4 +1,4 @@
-FROM wordpress:php8.4-apache
+FROM wordpress:php8.1-apache
 
 ARG XDEBUG_PORT=9003
 

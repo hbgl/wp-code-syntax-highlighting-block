@@ -283,21 +283,21 @@ function cshb_settings_activation_callback()
     add_option('cshb_options', CshbOptions::defaults()->toArray());
 }
 
-final readonly class CshbOptions
+final class CshbOptions
 {
-    private const int VERSION = 1;
+    private const VERSION = 1;
 
     /**
      * @param list<string> $themeFavorites
      * @param list<string> $languageFavorites
      */
     public function __construct(
-        public string $themeDefault,
-        public string $themeLightDefault,
-        public string $themeDarkDefault,
-        public array $themeFavorites,
-        public string $languageDefault,
-        public array $languageFavorites,
+        public readonly string $themeDefault,
+        public readonly string $themeLightDefault,
+        public readonly string $themeDarkDefault,
+        public readonly array $themeFavorites,
+        public readonly string $languageDefault,
+        public readonly array $languageFavorites,
     ) {
     }
 
