@@ -92,7 +92,6 @@ mysql -h 127.0.0.1 -P 8427 -u root -proot
 
 PRs and issues welcome.
 
-- [ ] User-defined defaults for language and theme
 - [ ] Better editor for writing the code (maybe [Monaco Editor](https://github.com/microsoft/monaco-editor)?)
 - [ ] Custom themes
 - [ ] Custom language definitions
