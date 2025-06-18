@@ -2,7 +2,7 @@
 Contributors:      hbgl
 Tags:              code, syntax-highlighting
 Tested up to:      6.8
-Stable tag:        1.0.0
+Stable tag:        1.1.0
 License:           MIT
 License URI:       https://opensource.org/license/MIT
 
@@ -30,6 +30,9 @@ A Wordpress plugin that provides a Gutenberg block for displaying computer sourc
 2. A demo of editing the block in the Gutenberg editor.
 
 == Changelog ==
+
+= 1.1.0 =
+* Added better code editor
 
 = 1.0.0 =
 * Release
