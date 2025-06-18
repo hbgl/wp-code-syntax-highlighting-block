@@ -229,6 +229,39 @@ add_action('admin_init', function () {
         'cshb_section_language',
         ['label_for' => 'cshb_field_language_favorites'],
     );
+
+    add_settings_section(
+        'cshb_section_editor',
+        __('Editor Settings', 'code-syntax-highlighting-block'),
+        '__return_null',
+        'code-syntax-highlighting-block',
+    );
+
+    add_settings_field(
+        'cshb_field_editor_indentation',
+        __('Indentation', 'code-syntax-highlighting-block'),
+        function ($args) {
+            $value = cshb_options()->editorIndentation;
+            ?>
+            <select
+                id="<?php echo esc_attr($args['label_for']); ?>"
+                name="cshb_options[editor_indentation]"
+            >
+                <?php if ($value === null): ?>
+                    <option value="" selected></option>
+                <?php endif; ?>
+                <?php foreach (CshbEditorIndentation::cases() as $case): ?>
+                    <option value="<?php echo esc_attr($case->value); ?>" <?php selected($value?->value, $case->value); ?>>
+                        <?php echo esc_html($case->humanName()); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <?php
+        },
+        'code-syntax-highlighting-block',
+        'cshb_section_editor',
+        ['label_for' => 'cshb_field_editor_indentation'],
+    );
 });
 
 add_action('admin_menu', function () {
@@ -274,18 +307,47 @@ function cshb_options(): CshbOptions
     return CshbOptions::fromArray(get_option('cshb_options', []));
 }
 
-function cshb_settings_activation_callback()
-{
-    if (get_option('cshb_options', false) !== false) {
-        return;
+function cshb_settings_migrate(string $oldVersion) {
+    if (version_compare($oldVersion, '1.0.0', '<')) {
+        add_option('cshb_options', [
+            '__version' => 1,
+            'theme_default' => 'atom-one-light',
+            'theme_light_default' => '',
+            'theme_dark_default' => '',
+            'theme_favorites' => [
+                'atom-one-dark',
+                'atom-one-light',
+            ],
+            'language_default' => 'php',
+            'language_favorites' => [
+                'css',
+                'html',
+                'javascript',
+                'php',
+                'sql',
+                'typescript',
+            ],
+        ]);
     }
 
-    add_option('cshb_options', CshbOptions::defaults()->toArray());
+    if (version_compare($oldVersion, '1.1.0', '<')) {
+        $optionsArray = get_option('cshb_options', false);
+        if (is_array($optionsArray)) {
+            $optionsArray['__version'] = 2;
+            $optionsArray['editor_indentation'] = '    ';
+            update_option('cshb_options', $optionsArray);
+        }
+    }
+}
+
+function cshb_settings_uninstall(): void
+{
+    delete_option('cshb_options');
 }
 
 final class CshbOptions
 {
-    private const VERSION = 1;
+    private const VERSION = 2;
 
     /**
      * @param list<string> $themeFavorites
@@ -298,29 +360,8 @@ final class CshbOptions
         public readonly array $themeFavorites,
         public readonly string $languageDefault,
         public readonly array $languageFavorites,
+        public readonly ?CshbEditorIndentation $editorIndentation,
     ) {
-    }
-
-    public static function defaults(): self
-    {
-        return new self(
-            'atom-one-light',
-            '',
-            '',
-            [
-                'atom-one-dark',
-                'atom-one-light',
-            ],
-            'php',
-            [
-                'css',
-                'html',
-                'javascript',
-                'php',
-                'sql',
-                'typescript',
-            ],
-        );
     }
 
     public static function fromArray(array $array): self
@@ -357,6 +398,12 @@ final class CshbOptions
         }
         $languageFavorites = array_values(array_filter($languageFavorites, 'is_string'));
 
+        $editorIndentationRaw = $array['editor_indentation'] ?? '';
+        if (! is_string($editorIndentationRaw)) {
+            $editorIndentationRaw = '';
+        }
+        $editorIndentation = CshbEditorIndentation::tryFrom($editorIndentationRaw);
+        
         return new self(
             $themeDefault,
             $themeLightDefault,
@@ -364,6 +411,7 @@ final class CshbOptions
             $themeFavorites,
             $languageDefault,
             $languageFavorites,
+            $editorIndentation,
         );
     }
 
@@ -377,6 +425,25 @@ final class CshbOptions
             'theme_favorites' => $this->themeFavorites,
             'language_default' => $this->languageDefault,
             'language_favorites' => $this->languageFavorites,
+            'editor_indentation' => $this->editorIndentation?->value,
         ];
+    }
+}
+
+enum CshbEditorIndentation : string {
+    case SingleSpace = ' ';
+    case TwoSpaces = '  ';
+    case ThreeSpaces = '   ';
+    case FourSpaces = '    ';
+    case Tab = "\t";
+
+    public function humanName(): string {
+        return match($this) {
+            self::SingleSpace => __('Single Space', 'code-syntax-highlighting-block'),
+            self::TwoSpaces => __('Two Spaces', 'code-syntax-highlighting-block'),
+            self::ThreeSpaces => __('Three Spaces', 'code-syntax-highlighting-block'),
+            self::FourSpaces => __('Four Spaces', 'code-syntax-highlighting-block'),
+            self::Tab => __('Tab', 'code-syntax-highlighting-block'),
+        };
     }
 }

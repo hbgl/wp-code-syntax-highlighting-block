@@ -1,12 +1,12 @@
 import { __ } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import { PanelBody, ComboboxControl, TextareaControl } from '@wordpress/components';
-import { useEffect } from '@wordpress/element';
+import { PanelBody, ComboboxControl } from '@wordpress/components';
+import { useCallback, useEffect } from '@wordpress/element';
 import hljs from 'highlight.js';
-import useDebouncedInputCustom from './lib/debounce';
 import { listThemes } from './lib/themes';
 import { tryHighlightCode } from './lib/highlight';
 import { getSettings } from './lib/settings';
+import { CodemirrorEditor } from './lib/codemirror/CodemirrorEditor';
 
 /**
  * @typedef {import('@wordpress/components/build-types/combobox-control/types').ComboboxControlOption} ComboboxControlOption
@@ -54,37 +54,35 @@ export default function Edit({ attributes, setAttributes }) {
         }
     }, []);
 
-    const [codeImmediateValue, setCodeDebouncedValue, codeDebouncedValue] = useDebouncedInputCustom(code, 1000);
-
-    useEffect(() => {
+    const onCodeChange = useCallback(value => {
         setAttributes({
-            code: codeDebouncedValue,
-            codeHighlightedHtml: tryHighlightCode(codeDebouncedValue, language),
+            code: value,
+            codeHighlightedHtml: tryHighlightCode(value, language),
         });
-    }, [codeDebouncedValue]);
+    }, [language]);
 
-    const onLanguagechange = value => {
+    const onLanguageChange = useCallback(value => {
         rememberedSelections.language = value || null;
         setAttributes({
             language: value,
-            codeHighlightedHtml: tryHighlightCode(codeDebouncedValue, value),
+            codeHighlightedHtml: tryHighlightCode(code, value),
         });
-    };
+    }, [code]);
 
-    const onThemeChange = value => {
+    const onThemeChange = useCallback(value => {
         rememberedSelections.theme = value || null;
         setAttributes({ theme: value });
-    };
+    }, []);
 
-    const onThemeLightChange = value => {
+    const onThemeLightChange = useCallback(value => {
         rememberedSelections.themeLight = value || null;
         setAttributes({ themeLight: value });
-    };
+    }, []);
 
-    const onThemeDarkChange = value => {
+    const onThemeDarkChange = useCallback(value => {
         rememberedSelections.themeDark = value || null;
         setAttributes({ themeDark: value });
-    };
+    }, []);
 
     return (
         <div {...useBlockProps()}>
@@ -94,7 +92,7 @@ export default function Edit({ attributes, setAttributes }) {
                         label={__('Language', 'code-syntax-highlighting-block')}
                         value={language}
                         options={getLanguageOptions()}
-                        onChange={onLanguagechange}
+                        onChange={onLanguageChange}
                         allowReset={false}
                     />
                     <ComboboxControl
@@ -120,11 +118,11 @@ export default function Edit({ attributes, setAttributes }) {
                     />
                 </PanelBody>
             </InspectorControls>
-            <TextareaControl
-                style={{font: '1rem Inconsolata, monospace' }}
-                rows="8"
-                value={codeImmediateValue}
-                onChange={(value) => setCodeDebouncedValue(value)}
+
+            <CodemirrorEditor
+                initialCode={code}
+                language={language}
+                onChange={onCodeChange}
             />
         </div>
     );

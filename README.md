@@ -92,9 +92,9 @@ mysql -h 127.0.0.1 -P 8427 -u root -proot
 
 PRs and issues welcome.
 
-- [ ] Better editor for writing the code (maybe [Monaco Editor](https://github.com/microsoft/monaco-editor)?)
-- [ ] Custom themes
-- [ ] Custom language definitions
+- [ ] Live preview of theme in editor. Would currently require a bridge between Codemirror and Highlight.js.
+- [ ] Custom themes.
+- [ ] Custom language definitions.
 
 ## License
 

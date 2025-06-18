@@ -6,6 +6,7 @@
  * @property {string} themeDefaultLight
  * @property {string} themeDefaultDark
  * @property {string[]} themeFavorites
+ * @property {string} editorIndentation
  */
 
 /** @type {Object} */
@@ -19,6 +20,7 @@ const settings = Object.freeze({
     themeDefaultLight: settingsRaw.theme_dark_default ?? '',
     themeDefaultDark: settingsRaw.theme_dark_default ?? '',
     themeFavorites: settingsRaw.theme_favorites ?? [],
+    editorIndentation: settingsRaw.editor_indentation || '    ',
 });
 
 export function getSettings() {
