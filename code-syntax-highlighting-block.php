@@ -73,4 +73,4 @@ function cshb_uninstall() {
     delete_option('cshb_version');
 }
 
-register_uninstall_hook( __FILE__, 'cshb_unintall');
+register_uninstall_hook( __FILE__, 'cshb_uninstall');
