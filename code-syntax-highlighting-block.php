@@ -58,6 +58,7 @@ add_action('plugins_loaded', function () { // Migration
     }
 
     try {
+        assert(is_string($storedVersion));
         cshb_settings_migrate($storedVersion);
 
         update_option('cshb_version', CODE_SYNTAX_HIGHLIGHTING_BLOCK_VERSION);
@@ -68,7 +69,7 @@ add_action('plugins_loaded', function () { // Migration
     }
 });
 
-function cshb_uninstall() {
+function cshb_uninstall(): void {
     cshb_settings_uninstall();
     delete_option('cshb_version');
 }

@@ -26,6 +26,9 @@ final class CshbManifest
     ) {
     }
 
+    /**
+     * @param array<mixed> $array 
+     */
     public static function fromArray(array $array): self
     {
         $themes = $array['themes'] ?? [];

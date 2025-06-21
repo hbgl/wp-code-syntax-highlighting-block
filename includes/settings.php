@@ -304,10 +304,12 @@ add_action('enqueue_block_editor_assets', function () {
 
 function cshb_options(): CshbOptions
 {
-    return CshbOptions::fromArray(get_option('cshb_options', []));
+    $options = get_option('cshb_options', []);
+    assert(is_array($options));
+    return CshbOptions::fromArray($options);
 }
 
-function cshb_settings_migrate(string $oldVersion) {
+function cshb_settings_migrate(string $oldVersion): void {
     if (version_compare($oldVersion, '1.0.0', '<')) {
         add_option('cshb_options', [
             '__version' => 1,
@@ -364,6 +366,9 @@ final class CshbOptions
     ) {
     }
 
+    /**
+     * @param array<mixed> $array 
+     */
     public static function fromArray(array $array): self
     {
         $themeDefault = $array['theme_default'] ?? '';
@@ -415,6 +420,9 @@ final class CshbOptions
         );
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function toArray(): array
     {
         return [

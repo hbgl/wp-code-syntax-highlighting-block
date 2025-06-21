@@ -1,0 +1,6 @@
+parameters:
+  level: 9
+  rememberPossiblyImpureFunctionValues: false
+  paths:
+    - code-syntax-highlighting-block.php
+    - includes/
