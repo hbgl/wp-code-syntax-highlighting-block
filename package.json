@@ -15,7 +15,9 @@
     },
     "devDependencies": {
         "@wordpress/scripts": "^30.17.0",
-        "postcss": "^8.5.4"
+        "postcss": "^8.5.4",
+        "unzipper": "^0.12.3",
+        "zx": "^8.5.5"
     },
     "dependencies": {
         "@codemirror/lang-cpp": "^6.0.2",
