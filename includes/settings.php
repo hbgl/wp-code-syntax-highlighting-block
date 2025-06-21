@@ -231,6 +231,39 @@ add_action('admin_init', function () {
     );
 
     add_settings_section(
+        'cshb_section_font',
+        __('Font Settings', 'code-syntax-highlighting-block'),
+        '__return_null',
+        'code-syntax-highlighting-block',
+    );
+
+    add_settings_field(
+        'cshb_field_line_height',
+        __('Line Height', 'code-syntax-highlighting-block'),
+        function ($args) {
+            $value = cshb_options()->lineHeight;
+            ?>
+            <select
+                id="<?php echo esc_attr($args['label_for']); ?>"
+                name="cshb_options[line_height]"
+            >
+                <?php if ($value === null): ?>
+                    <option value="" selected></option>
+                <?php endif; ?>
+                <?php foreach (CshbLineHeight::cases() as $case): ?>
+                    <option value="<?php echo esc_attr($case->value); ?>" <?php selected($value?->value, $case->value); ?>>
+                        <?php echo esc_html($case->value); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <?php
+        },
+        'code-syntax-highlighting-block',
+        'cshb_section_font',
+        ['label_for' => 'cshb_field_line_height'],
+    );
+
+    add_settings_section(
         'cshb_section_editor',
         __('Editor Settings', 'code-syntax-highlighting-block'),
         '__return_null',
@@ -340,6 +373,15 @@ function cshb_settings_migrate(string $oldVersion): void {
             update_option('cshb_options', $optionsArray);
         }
     }
+
+    if (version_compare($oldVersion, '1.1.1', '<')) {
+        $optionsArray = get_option('cshb_options', false);
+        if (is_array($optionsArray)) {
+            $optionsArray['__version'] = 3;
+            $optionsArray['line_height'] = null;
+            update_option('cshb_options', $optionsArray);
+        }
+    }
 }
 
 function cshb_settings_uninstall(): void
@@ -349,7 +391,7 @@ function cshb_settings_uninstall(): void
 
 final class CshbOptions
 {
-    private const VERSION = 2;
+    private const VERSION = 3;
 
     /**
      * @param list<string> $themeFavorites
@@ -362,6 +404,7 @@ final class CshbOptions
         public readonly array $themeFavorites,
         public readonly string $languageDefault,
         public readonly array $languageFavorites,
+        public readonly ?CshbLineHeight $lineHeight,
         public readonly ?CshbEditorIndentation $editorIndentation,
     ) {
     }
@@ -403,6 +446,12 @@ final class CshbOptions
         }
         $languageFavorites = array_values(array_filter($languageFavorites, 'is_string'));
 
+        $lineHeightRaw = $array['line_height'] ?? '';
+        if (! is_string($lineHeightRaw)) {
+            $lineHeightRaw = '';
+        }
+        $lineHeight = CshbLineHeight::tryFrom($lineHeightRaw);
+
         $editorIndentationRaw = $array['editor_indentation'] ?? '';
         if (! is_string($editorIndentationRaw)) {
             $editorIndentationRaw = '';
@@ -416,6 +465,7 @@ final class CshbOptions
             $themeFavorites,
             $languageDefault,
             $languageFavorites,
+            $lineHeight,
             $editorIndentation,
         );
     }
@@ -433,6 +483,7 @@ final class CshbOptions
             'theme_favorites' => $this->themeFavorites,
             'language_default' => $this->languageDefault,
             'language_favorites' => $this->languageFavorites,
+            'line_height' => $this->lineHeight?->value,
             'editor_indentation' => $this->editorIndentation?->value,
         ];
     }
@@ -454,4 +505,18 @@ enum CshbEditorIndentation : string {
             self::Tab => __('Tab', 'code-syntax-highlighting-block'),
         };
     }
+}
+
+enum CshbLineHeight: string {
+    case LH1_0 = '1.0';
+    case LH1_1 = '1.1';
+    case LH1_2 = '1.2';
+    case LH1_3 = '1.3';
+    case LH1_4 = '1.4';
+    case LH1_5 = '1.5';
+    case LH1_6 = '1.6';
+    case LH1_7 = '1.7';
+    case LH1_8 = '1.8';
+    case LH1_9 = '1.9';
+    case LH2_0 = '2.0';
 }
