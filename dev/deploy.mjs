@@ -108,6 +108,19 @@ const SVN_TAG_VERSION_DIR = path.join(SVN_TAGS_DIR, PACKAGE_VERSION);
 
 !(await dirExists(SVN_TAG_VERSION_DIR)) || errorExit(`Error: SVN tag directory already exists: ${SVN_TAG_VERSION_DIR}`);
 
+// ---- PHPStan
+
+cd(PROJECT_DIR);
+
+try {
+    await $({ quiet: true })`composer run phpstan -- --no-progress`;
+} catch (e) {
+    echo(e);
+    echo('');
+    errorExit('Aborting due to PHPStan errors. Fix them first.');
+}
+
+
 // ---- Confirm preparation
 
 echo('Ready to prepare release:')
