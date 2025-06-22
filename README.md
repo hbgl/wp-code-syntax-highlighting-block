@@ -34,6 +34,7 @@ Installing dependencies:
 
 ```bash
 npm ci
+composer install
 ```
 
 Build project and start watcher:
@@ -46,9 +47,24 @@ The Wordpress application is available at [http://localhost:8426/](http://localh
 
 You should now be able to use the block "Code with Syntax Highlighting" in the Gutenberg editor after activating the plugin.
 
-## Building plugin ZIP for production
+### Static analysis with PHPStan
 
 ```bash
+composer run phpstan
+```
+
+## Deployment
+
+The deployment script `dev/deploy.mjs` automates the process of publishing a new version to wordpress.org. The scripts contains various checking procesdures but it is ultimately your responsibility to ensure that the plugin is fit for release.
+
+```bash
+node dev/deploy.mjs
+```
+
+## Building plugin ZIP for manual deployment
+
+```bash
+npm run build
 npm run plugin-zip
 ```
 
