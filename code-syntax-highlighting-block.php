@@ -3,7 +3,7 @@
 /**
  * Plugin Name:       Code Syntax Highlighting Block
  * Description:       Block for displaying computer code with syntax highlighting.
- * Version:           1.1.1
+ * Version:           1.1.2
  * Requires at least: 6.7
  * Requires PHP:      8.1
  * Author:            hbgl
@@ -72,7 +72,7 @@ add_action('plugins_loaded', function () { // Migration
 /**
  * Enqueue default styles
  */
-add_action('wp_enqueue_scripts', function() {
+add_action('wp_enqueue_scripts', function () {
     $lineHeight = cshb_options()->lineHeight;
 
     if ($lineHeight !== null) {
@@ -81,17 +81,18 @@ add_action('wp_enqueue_scripts', function() {
         wp_add_inline_style(
             'cshb-default-styles',
             <<<DATA
-            .wp-block-code-syntax-highlighting-block-code-syntax-highlighting-block {
-                line-height: {$lineHeight->value};
-            }
-            DATA,
+                .wp-block-code-syntax-highlighting-block-code-syntax-highlighting-block {
+                    line-height: {$lineHeight->value};
+                }
+                DATA,
         );
     }
 }, 20); // Priority after theme
 
-function cshb_uninstall(): void {
+function cshb_uninstall(): void
+{
     cshb_settings_uninstall();
     delete_option('cshb_version');
 }
 
-register_uninstall_hook( __FILE__, 'cshb_uninstall');
+register_uninstall_hook(__FILE__, 'cshb_uninstall');

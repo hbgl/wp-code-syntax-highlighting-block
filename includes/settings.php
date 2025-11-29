@@ -342,7 +342,8 @@ function cshb_options(): CshbOptions
     return CshbOptions::fromArray($options);
 }
 
-function cshb_settings_migrate(string $oldVersion): void {
+function cshb_settings_migrate(string $oldVersion): void
+{
     if (version_compare($oldVersion, '1.0.0', '<')) {
         add_option('cshb_options', [
             '__version' => 1,
@@ -406,11 +407,10 @@ final class CshbOptions
         public readonly array $languageFavorites,
         public readonly ?CshbLineHeight $lineHeight,
         public readonly ?CshbEditorIndentation $editorIndentation,
-    ) {
-    }
+    ) {}
 
     /**
-     * @param array<mixed> $array 
+     * @param array<mixed> $array
      */
     public static function fromArray(array $array): self
     {
@@ -457,7 +457,7 @@ final class CshbOptions
             $editorIndentationRaw = '';
         }
         $editorIndentation = CshbEditorIndentation::tryFrom($editorIndentationRaw);
-        
+
         return new self(
             $themeDefault,
             $themeLightDefault,
@@ -489,15 +489,17 @@ final class CshbOptions
     }
 }
 
-enum CshbEditorIndentation : string {
+enum CshbEditorIndentation: string
+{
     case SingleSpace = ' ';
     case TwoSpaces = '  ';
     case ThreeSpaces = '   ';
     case FourSpaces = '    ';
     case Tab = "\t";
 
-    public function humanName(): string {
-        return match($this) {
+    public function humanName(): string
+    {
+        return match ($this) {
             self::SingleSpace => __('Single Space', 'code-syntax-highlighting-block'),
             self::TwoSpaces => __('Two Spaces', 'code-syntax-highlighting-block'),
             self::ThreeSpaces => __('Three Spaces', 'code-syntax-highlighting-block'),
@@ -507,7 +509,8 @@ enum CshbEditorIndentation : string {
     }
 }
 
-enum CshbLineHeight: string {
+enum CshbLineHeight: string
+{
     case LH1_0 = '1.0';
     case LH1_1 = '1.1';
     case LH1_2 = '1.2';

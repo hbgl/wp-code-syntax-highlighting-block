@@ -23,11 +23,10 @@ final class CshbManifest
     public function __construct(
         public readonly array $themes,
         public readonly array $languages,
-    ) {
-    }
+    ) {}
 
     /**
-     * @param array<mixed> $array 
+     * @param array<mixed> $array
      */
     public static function fromArray(array $array): self
     {

@@ -5,6 +5,11 @@
 
 TBD
 
+## 1.1.2 - November 29, 2025
+
+- Updated Codemirror code editor in Gutenberg to latest version
+- Updated internal dependencies
+
 ## 1.1.1 - June 21, 2025
 
 ### Added
